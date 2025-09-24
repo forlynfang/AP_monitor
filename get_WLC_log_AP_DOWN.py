@@ -3,7 +3,7 @@
 """
 This script is to check the AP status and send related alert to Teams channel in case any AP is lost from WLC.
 """
-
+import sys
 import json
 import requests
 from ftplib import FTP
@@ -80,6 +80,7 @@ for device in cisco_device:
                 
         except Exception as e:
             print(f"连接失败: {str(e)}")
+            sys.exit(1)
 
         target = "Registered"
 
