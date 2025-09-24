@@ -32,6 +32,7 @@ cisco_device = [
         'host': 'cnchen02wc01',
         'username': cisco_username,
         'password': cisco_password,
+        'timeout': 30,
         'port': 22,  # 默认SSH端口
     },
     {
@@ -39,6 +40,7 @@ cisco_device = [
         'host': 'sgsing01wc01',
         'username': cisco_username,
         'password': cisco_password,
+        'timeout': 30,
         'port': 22,  # 默认SSH端口
     },
     {
@@ -46,6 +48,7 @@ cisco_device = [
         'host': 'jptkyo01wc01',
         'username': cisco_username,
         'password': cisco_password,
+        'timeout': 30,
         'port': 22,  # 默认SSH端口
     },
     {
@@ -53,6 +56,7 @@ cisco_device = [
         'host': 'inhdrb02wc01',
         'username': cisco_username,
         'password': cisco_password,
+        'timeout': 30,
         'port': 22,  # 默认SSH端口
     },
     {
@@ -60,6 +64,7 @@ cisco_device = [
         'host': 'cnzyng02wc01',
         'username': cisco_username,
         'password': cisco_password,
+        'timeout': 30,
         'port': 22,  # 默认SSH端口
     }
 ]
