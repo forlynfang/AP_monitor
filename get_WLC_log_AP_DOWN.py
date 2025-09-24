@@ -16,12 +16,14 @@ from netmiko import ConnectHandler
 
 
 #os.chdir('C:/Users/ffang/Downloads/python')
-current_dir = os.getcwd()
-print(f"current work directory：{current_dir}")
+#current_dir = os.getcwd()
+#print(f"current work directory：{current_dir}")
 
-load_dotenv(dotenv_path=".env")
-cisco_username = os.getenv("CISCO_USERNAME")
-cisco_password = os.getenv("CISCO_PASSWORD")
+#load_dotenv(dotenv_path=".env")
+cisco_username = os.environ.get('CISCO_USERNAME')
+cisco_password = os.environ.get('CISCO_PASSWORD')           
+ftp_username = os.environ.get('FTP_USERNAME')
+ftp_password = os.environ.get('FTP_PASSWORD') 
 
 # 定义设备连接参数
 cisco_device = [
@@ -111,7 +113,7 @@ for device in cisco_device:
                 return None
         
         # 使用示例
-        content = read_ftp_file('10.133.10.115', 'apacftp', 'P@ssw0rd', f'/python/{host}output_previous_AP.txt')
+        content = read_ftp_file('10.133.10.115', ftp_username, ftp_password, f'/python/{host}output_previous_AP.txt')
         #if content:
             #print("文件内容:", content)
         with open("output_previous_AP.txt", "w", encoding="utf-8") as f2:  # 推荐指定编码
@@ -138,19 +140,19 @@ for device in cisco_device:
                         else:
                             print(f"This AP is lost on {host} : {highlighted.strip()}")
                             found = True
-                            # teams_webhook_url = "https://aligntech.webhook.office.com/webhookb2/7ed9a6c7-e811-4e71-956c-9e54f8b7d705@9ac44c96-980a-481b-ae23-d8f56b82c605/JenkinsCI/9ecff2f044b44cfcae37b0376ecd1540/9d21b513-f4ee-4b3b-995c-7a422a087a6c/V2-0LzN76qekmVrAPO1b9pX-4MwxVsHKo7lbMnV_iHFb81"
-                            # message = {
-                            # "text": f"WARNING: This AP is lost on {host} , last status was: {highlighted.strip()}. Please check related AP status on {host}."
-                            # }
-                            # try:
-                            #     teams_response = requests.post(
-                            #     teams_webhook_url,
-                            #     json=message,
-                            #     headers={"Content-Type": "application/json"}
-                            # )
-                            #     teams_response.raise_for_status()
-                            # except Exception as e:
-                            #     print(f"Failed to send alert to MS Teams for {host}")       
+                            teams_webhook_url = "https://aligntech.webhook.office.com/webhookb2/7ed9a6c7-e811-4e71-956c-9e54f8b7d705@9ac44c96-980a-481b-ae23-d8f56b82c605/JenkinsCI/9ecff2f044b44cfcae37b0376ecd1540/9d21b513-f4ee-4b3b-995c-7a422a087a6c/V2-0LzN76qekmVrAPO1b9pX-4MwxVsHKo7lbMnV_iHFb81"
+                            message = {
+                            "text": f"WARNING: This AP is lost on {host} , status on last time was: {highlighted.strip()}. Please check related AP status on {host}."
+                            }
+                            try:
+                                teams_response = requests.post(
+                                teams_webhook_url,
+                                json=message,
+                                headers={"Content-Type": "application/json"}
+                            )
+                                teams_response.raise_for_status()
+                            except Exception as e:
+                                print(f"Failed to send alert to MS Teams for {host}")       
                                 
             if not found:
                 print(f"All APs are good on {host} ")  # :ml-citation{ref="3,7" data="citationList"}
@@ -173,4 +175,4 @@ for device in cisco_device:
         # 使用示例
         with open(f"{host}output_previous_AP.txt", "w", encoding="utf-8") as f:  # 推荐指定编码
             f.write(text)
-        upload_text_file('10.133.10.115', 'apacftp', 'P@ssw0rd', f'{host}output_previous_AP.txt', f'/python/{host}output_previous_AP.txt')
+        upload_text_file('10.133.10.115', ftp_username, ftp_password, f'{host}output_previous_AP.txt', f'/python/{host}output_previous_AP.txt')
