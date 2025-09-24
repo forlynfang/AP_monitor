@@ -142,7 +142,7 @@ for device in cisco_device:
                             found = True
                             teams_webhook_url = "https://aligntech.webhook.office.com/webhookb2/7ed9a6c7-e811-4e71-956c-9e54f8b7d705@9ac44c96-980a-481b-ae23-d8f56b82c605/JenkinsCI/9ecff2f044b44cfcae37b0376ecd1540/9d21b513-f4ee-4b3b-995c-7a422a087a6c/V2-0LzN76qekmVrAPO1b9pX-4MwxVsHKo7lbMnV_iHFb81"
                             message = {
-                            "text": f"WARNING: This AP is lost on {host} , status on last time was: {highlighted.strip()}. Please check related AP status on {host}."
+                            "text": f"WARNING: This AP is lost on {host} , It's status on last time was: {highlighted.strip()}. Now total APs on {host} is {line_count_c}."
                             }
                             try:
                                 teams_response = requests.post(
