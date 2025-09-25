@@ -137,18 +137,18 @@ for device in cisco_device:
                         lines_pp = line.rstrip('\n')
                         line_count_c = len(lines_c)
                         line_count_p = len(lines_p)
-                        print(f"line1={line_count_c} and line2={line_count_p}")
+                        #print(f"line1={line_count_c} and line2={line_count_p}")
                         #print(f"{lines_pp}")
                         #print(f"{lines_c}")
-                        if lines_pp in lines_c :                  
-                            print(f"This AP is good on {host} ")  # :ml-citation{ref="3,7" data="citationList"}                                                                                   
+                        if lines_pp not in lines_c :                  
+                            #print(f"This AP is good on {host} ")  # :ml-citation{ref="3,7" data="citationList"}                                                                                   
                         
-                        else:
+                        #else:
                             print(f"This AP is lost on {host} : {highlighted.strip()}")
                             found = True
                             teams_webhook_url = "https://aligntech.webhook.office.com/webhookb2/7ed9a6c7-e811-4e71-956c-9e54f8b7d705@9ac44c96-980a-481b-ae23-d8f56b82c605/JenkinsCI/9ecff2f044b44cfcae37b0376ecd1540/9d21b513-f4ee-4b3b-995c-7a422a087a6c/V2-0LzN76qekmVrAPO1b9pX-4MwxVsHKo7lbMnV_iHFb81"
                             message = {
-                            "text": f"WARNING: This AP is lost on {host} , It's status on last time was: {highlighted.strip()}. Now total APs on {host} is {line_count_c}."
+                            "text": f"WARNING: One AP is lost on {host} , It's status of last time was: {highlighted.strip()}. Now total APs on {host} is {line_count_c}."
                             }
                             try:
                                 teams_response = requests.post(
@@ -161,7 +161,7 @@ for device in cisco_device:
                                 print(f"Failed to send alert to MS Teams for {host}")       
                                 
             if not found:
-                print(f"All APs are good on {host} ")  # :ml-citation{ref="3,7" data="citationList"}
+                print(f"All {line_count_c} APs are good on {host} ")  # :ml-citation{ref="3,7" data="citationList"}
 
         def upload_text_file(host, username, password, local_path, remote_path):
             """上传文本文件到FTP服务器"""
