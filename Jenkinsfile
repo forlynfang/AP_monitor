@@ -32,6 +32,10 @@ pipeline {
                         credentialsId: 'FTP-ID',
                         usernameVariable: 'FTP_USERNAME', // 自定义用户名环境变量名
                         passwordVariable: 'FTP_PASSWORD'  // 自定义密码环境变量名
+                    ),
+                    string(
+                        credentialsId: 'Jenkins_webhook',
+                        variable: 'TEAMS_WEBHOOK' // 自定义密钥环境变量名
                     )
                 ]) {
                     // 在这个块内的所有步骤都可以访问到上面定义的环境变量
