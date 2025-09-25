@@ -141,10 +141,7 @@ for device in cisco_device:
                         #print(f"{lines_pp}")
                         #print(f"{lines_c}")
                         if lines_pp not in lines_c :                  
-                            #print(f"This AP is good on {host} ")  # :ml-citation{ref="3,7" data="citationList"}                                                                                   
-                        
-                        #else:
-                            print(f"This AP is lost on {host} : {highlighted.strip()}")
+                            print(f"One AP is lost on {host} : {highlighted.strip()}")
                             found = True
                             teams_webhook_url = "https://aligntech.webhook.office.com/webhookb2/7ed9a6c7-e811-4e71-956c-9e54f8b7d705@9ac44c96-980a-481b-ae23-d8f56b82c605/JenkinsCI/9ecff2f044b44cfcae37b0376ecd1540/9d21b513-f4ee-4b3b-995c-7a422a087a6c/V2-0LzN76qekmVrAPO1b9pX-4MwxVsHKo7lbMnV_iHFb81"
                             message = {
