@@ -88,7 +88,7 @@ for device in cisco_device:
             print(f"连接失败: {str(e)}")
             sys.exit(1)
 
-        target = "Registered"
+        target = "Disjoined"
 
         target_RCV = " Joined"
 
@@ -212,6 +212,6 @@ for device in cisco_device:
                 return False
 
         # 使用示例
-        with open(f"{host}output_previous_AP.txt", "w", encoding="utf-8") as f:  # 推荐指定编码
+        with open(f"{host}output_previous_AP_NEW.txt", "w", encoding="utf-8") as f:  # 推荐指定编码
             f.write(text)
-        upload_text_file('10.133.10.115', ftp_username, ftp_password, f'{host}output_previous_AP.txt', f'/python/{host}output_previous_AP.txt')
+        upload_text_file('10.133.10.115', 'apacftp', 'P@ssw0rd', f'{host}output_previous_AP_NEW.txt', f'/python/{host}output_previous_AP_NEW.txt')
