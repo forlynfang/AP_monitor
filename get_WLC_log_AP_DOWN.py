@@ -159,7 +159,7 @@ for device in cisco_device:
                                 print(f"Failed to send alert to MS Teams for {host}")       
                                 
             if not found:
-                print(f"All {line_count_c} APs are good on {host} ")  # :ml-citation{ref="3,7" data="citationList"}
+                print(f"All APs are good on {host} ")  # :ml-citation{ref="3,7" data="citationList"}
                 
         # find recovered AP============================================================================
         with open("output_AP.txt", 'r') as f11:
@@ -191,7 +191,10 @@ for device in cisco_device:
                             )
                                 teams_response.raise_for_status()
                             except Exception as e:
-                                print(f"Failed to send alert to MS Teams for {host}")    
+                                print(f"Failed to send alert to MS Teams for {host}")  
+            if not found:
+                print(f"All APs are good on {host} ")  # :ml-citation{ref="3,7" data="citationList"}                                
+                                
     
         def upload_text_file(host, username, password, local_path, remote_path):
             """上传文本文件到FTP服务器"""
