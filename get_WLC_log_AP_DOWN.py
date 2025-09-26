@@ -5,6 +5,7 @@ This script is to check the AP status and send related alert to Teams channel in
 """
 import sys
 import json
+import time
 import requests
 from ftplib import FTP
 from urllib3.exceptions import InsecureRequestWarning
@@ -160,7 +161,7 @@ for device in cisco_device:
                                 
             if not found:
                 print(f"All APs are good on {host} ")  # :ml-citation{ref="3,7" data="citationList"}
-                
+            time.sleep(1 * 60)    
         # find recovered AP============================================================================
         with open("output_AP.txt", 'r') as f11:
             found = False
