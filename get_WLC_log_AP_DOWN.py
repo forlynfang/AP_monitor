@@ -161,7 +161,7 @@ for device in cisco_device:
                                 
             if not found:
                 print(f"All APs are good on {host} ")  # :ml-citation{ref="3,7" data="citationList"}
-            time.sleep(1 * 60)    
+            time.sleep(1 * 30)    
         # find recovered AP============================================================================
         with open("output_AP.txt", 'r') as f11:
             found = False
