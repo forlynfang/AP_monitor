@@ -76,7 +76,7 @@ for device in cisco_device:
         
         try:
             with ConnectHandler(**device) as conn:
-                text = conn.send_command('sh ap summary | in Registered')  # 执行单条命令
+                text = conn.send_command('sh logging | in AP Event')  # 执行单条命令
                 #print(text)
                         
                 # 执行多条配置命令
@@ -90,6 +90,7 @@ for device in cisco_device:
 
         target = "Registered"
 
+        target_RCV = " Joined"
 
         # 覆盖写入模式（文件存在则清空后保存）
         with open("output_AP.txt", "w", encoding="utf-8") as f:  # 推荐指定编码
@@ -120,32 +121,32 @@ for device in cisco_device:
                 return None
         
         # 使用示例
-        content = read_ftp_file('10.133.10.115', ftp_username, ftp_password, f'/python/{host}output_previous_AP.txt')
+        content = read_ftp_file('10.133.10.115', 'apacftp', 'P@ssw0rd', f'/python/{host}output_previous_AP_NEW.txt')
         #if content:
             #print("文件内容:", content)
-        with open("output_previous_AP.txt", "w", encoding="utf-8") as f2:  # 推荐指定编码
+        with open("output_previous_AP_NEW.txt", "w", encoding="utf-8") as f2:  # 推荐指定编码
             f2.write(content)
-        
-        with open("output_previous_AP.txt", 'r') as f11:
+        # find lost AP============================================================================
+        with open("output_AP.txt", 'r') as f11:
             found = False
             for line_num, line in enumerate(f11, 1):
                 if target in line:
                     highlighted = line.replace(target, f"{Fore.RED}{target}{Style.RESET_ALL}")
                     
-                    with open("output_AP.txt", 'r') as fc, open("output_previous_AP.txt", 'r', encoding='utf-8') as fp:    
+                    with open("output_AP.txt", 'r') as fc, open("output_previous_AP_NEW.txt", 'r', encoding='utf-8') as fp:    
                         lines_c = [line.rstrip('\n') for line in fc.readlines()]
                         lines_p = [line.rstrip('\n') for line in fp.readlines()]
-                        lines_pp = line.rstrip('\n')
+                        lines_cc = line.rstrip('\n')
                         line_count_c = len(lines_c)
                         line_count_p = len(lines_p)
                         #print(f"line1={line_count_c} and line2={line_count_p}")
                         #print(f"{lines_pp}")
                         #print(f"{lines_c}")
-                        if lines_pp not in lines_c :                  
+                        if lines_cc not in lines_p :                                                                                     
                             print(f"One AP is lost on {host} : {highlighted.strip()}")
                             found = True
                             message = {
-                            "text": f"WARNING: One AP is lost on {host} , It's status of last time was: {highlighted.strip()}. Now total APs on {host} is {line_count_c}."
+                            "text": f"WARNING: One AP is lost on {host} , related log is: {highlighted.strip()}. "
                             }
                             try:
                                 teams_response = requests.post(
@@ -159,7 +160,39 @@ for device in cisco_device:
                                 
             if not found:
                 print(f"All {line_count_c} APs are good on {host} ")  # :ml-citation{ref="3,7" data="citationList"}
-
+                
+        # find recovered AP============================================================================
+        with open("output_AP.txt", 'r') as f11:
+            found = False
+            for line_num, line in enumerate(f11, 1):
+                if target_RCV in line:
+                    highlighted = line.replace(target, f"{Fore.RED}{target}{Style.RESET_ALL}")
+                    
+                    with open("output_AP.txt", 'r') as fc, open("output_previous_AP_NEW.txt", 'r', encoding='utf-8') as fp:    
+                        lines_c = [line.rstrip('\n') for line in fc.readlines()]
+                        lines_p = [line.rstrip('\n') for line in fp.readlines()]
+                        lines_cc = line.rstrip('\n')
+                        line_count_c = len(lines_c)
+                        line_count_p = len(lines_p)
+                        #print(f"line1={line_count_c} and line2={line_count_p}")
+                        #print(f"{lines_pp}")
+                        #print(f"{lines_c}")
+                        if lines_cc not in lines_p :                                                                                     
+                            print(f"One AP is back on {host} : {highlighted.strip()}")
+                            found = True
+                            message = {
+                            "text": f"WARNING: One AP is recovered on {host} , related log is: {highlighted.strip()}. "
+                            }
+                            try:
+                                teams_response = requests.post(
+                                teams_webhook_url,
+                                json=message,
+                                headers={"Content-Type": "application/json"}
+                            )
+                                teams_response.raise_for_status()
+                            except Exception as e:
+                                print(f"Failed to send alert to MS Teams for {host}")    
+    
         def upload_text_file(host, username, password, local_path, remote_path):
             """上传文本文件到FTP服务器"""
             try:
